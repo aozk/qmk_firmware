@@ -30,5 +30,10 @@
     },
     "clangd.arguments": [
         "--header-insertion=never"
-    ]
+    ],
+    "python.pythonPath": "/home/aozk/src/keyboard/bin/python",
+    "terminal.integrated.env.linux": {
+        "VIRTUAL_ENV": "/home/aozk/src/keyboard/",
+        "PATH": "/home/aozk/src/keyboard:${env:PATH}"
+    }
 }
