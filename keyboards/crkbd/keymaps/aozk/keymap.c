@@ -18,9 +18,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 #include "a2j/translate_ansi_to_jis.h"
+#if __has_include("secrets.h")
+    #include "secrets.h"
+#endif
+#ifndef MY_SECRET_MOT
+    #define MY_SECRET_MOT "Secret mot not set"
+#endif
+#ifndef MY_SECRET_DT
+    #define MY_SECRET_DT "Secret dt not set"
+#endif
 
 enum custom_keycodes {
     IME_TOGGLE = SAFE_RANGE,
+    MOT_PASS,
+    DT_PASS
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -41,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_DEL ,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LGUI, XXXXXXX, XXXXXXX, XXXXXXX,IME_TOGGLE,XXXXXXX,                     KC_LEFT, KC_DOWN, KC_UP  ,KC_RIGHT, XXXXXXX, KC_RCTL,
+      KC_LGUI, DT_PASS, MOT_PASS,XXXXXXX,IME_TOGGLE,XXXXXXX,                     KC_LEFT, KC_DOWN, KC_UP  ,KC_RIGHT, XXXXXXX, KC_RCTL,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -81,6 +92,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_LALT("`"));
             }
             return false;
+	case MOT_PASS:
+	    if (record->event.pressed) {
+		SEND_STRING(MY_SECRET_MOT);
+	    }
+	    return false;
+	case DT_PASS:
+	    if (record->event.pressed) {
+		SEND_STRING(MY_SECRET_DT);
+	    }
+	    return false;
     }
     return process_record_user_a2j(keycode, record);
 }
