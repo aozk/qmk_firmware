@@ -78,7 +78,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case IME_TOGGLE:
             if (record->event.pressed) {
-                tap_code16(LALT(KC_GRV));
+                SEND_STRING(SS_LALT("`"));
             }
             return false;
     }
